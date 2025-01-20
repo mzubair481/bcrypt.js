@@ -34,16 +34,28 @@
   "devDependencies": {
     "bcrypt": "latest",
     "google-closure-compiler": "^20240317.0.0",
+    "jest": "^29.7.0",
     "metascript": "~1.0.0",
-    "node-gzip": "^1.1.2",
-    "testjs": "~1.0.4"
+    "node-gzip": "^1.1.2"
   },
   "license": "MIT",
   "scripts": {
-    "test": "node node_modules/testjs/bin/testjs",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "build": "node scripts/build.js",
     "compile": "google-closure-compiler --js=dist/bcrypt.js --js_output_file=dist/bcrypt.min.js --compilation_level=SIMPLE_OPTIMIZATIONS --create_source_map=dist/bcrypt.min.map",
     "compress": "node scripts/compress.js",
-    "make": "npm run build && npm run compile && npm run compress && npm test"
+    "make": "npm test && npm run build && npm run compile && npm run compress"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!**/node_modules/**"
+    ]
   }
 }
