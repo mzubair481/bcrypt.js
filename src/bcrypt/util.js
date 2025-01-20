@@ -4,9 +4,18 @@
  * @param {function(...[*])} callback Callback to execute
  * @inner
  */
-var nextTick = typeof process !== 'undefined' && process && typeof process.nextTick === 'function'
-    ? (typeof setImmediate === 'function' ? setImmediate : process.nextTick)
-    : setTimeout;
+
+// Use Promise-based deferral as primary method, with setTimeout as fallback
+var nextTick = (function() {
+    if (typeof Promise === 'function') {
+        return function(fn) {
+            Promise.resolve().then(function() { fn(); });
+        };
+    }
+    return function(fn) {
+        setTimeout(fn, 0);
+    };
+})();
 
 //? include("util/utf8.js");
 

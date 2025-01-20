@@ -333,9 +333,18 @@
      * @param {function(...[*])} callback Callback to execute
      * @inner
      */
-    var nextTick = typeof process !== 'undefined' && process && typeof process.nextTick === 'function'
-        ? (typeof setImmediate === 'function' ? setImmediate : process.nextTick)
-        : setTimeout;
+
+    // Use Promise-based deferral as primary method, with setTimeout as fallback
+    var nextTick = (function() {
+        if (typeof Promise === 'function') {
+            return function(fn) {
+                Promise.resolve().then(function() { fn(); });
+            };
+        }
+        return function(fn) {
+            setTimeout(fn, 0);
+        };
+    })();
 
     /** Calculates the byte length of a string encoded as UTF8. */
     function utf8Length(string) {
