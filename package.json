@@ -35,6 +35,7 @@
     "bcrypt": "latest",
     "google-closure-compiler": "^20240317.0.0",
     "metascript": "~1.0.0",
+    "node-gzip": "^1.1.2",
     "testjs": "~1.0.4"
   },
   "license": "MIT",
@@ -42,7 +43,7 @@
     "test": "node node_modules/testjs/bin/testjs",
     "build": "node scripts/build.js",
     "compile": "google-closure-compiler --js=dist/bcrypt.js --js_output_file=dist/bcrypt.min.js --compilation_level=SIMPLE_OPTIMIZATIONS --create_source_map=dist/bcrypt.min.map",
-    "compress": "gzip -c -9 dist/bcrypt.min.js > dist/bcrypt.min.js.gz",
+    "compress": "node scripts/compress.js",
     "make": "npm run build && npm run compile && npm run compress && npm test"
   }
 }
